@@ -246,8 +246,8 @@ int Fun4All_G4_sPHENIX(
   Enable::QA = true;
 
   // Global options (enabled for all enables subsystems - if implemented)
-  //  Enable::ABSORBER = true;
-  //  Enable::OVERLAPCHECK = true;
+  Enable::ABSORBER = true;
+  Enable::OVERLAPCHECK = true;
   //  Enable::VERBOSITY = 1;
 
   // Enable::BBC = true;
@@ -588,6 +588,9 @@ int Fun4All_G4_sPHENIX(
   //-----
 
   se->End();
+  
+  se->PrintTimer();
+  
   std::cout << "All done" << std::endl;
   delete se;
   if (Enable::PRODUCTION)
