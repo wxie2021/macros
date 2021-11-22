@@ -20,6 +20,7 @@
 #include <G4_User.C>
 #include <QA.C>
 
+#include <phpythia8/PHPy8JetTrigger.h>
 #include <fun4all/Fun4AllDstOutputManager.h>
 #include <fun4all/Fun4AllOutputManager.h>
 #include <fun4all/Fun4AllServer.h>
@@ -90,6 +91,7 @@ int Fun4All_G4_sPHENIX(
   //  Input::PYTHIA6 = true;
 
    Input::PYTHIA8 = true;
+   PYTHIA8::config_file = "./phpythia8_charm_jet.cfg";
 
   //  Input::GUN = true;
   //  Input::GUN_NUMBER = 3; // if you need 3 of them
@@ -191,6 +193,16 @@ int Fun4All_G4_sPHENIX(
   // pythia8
   if (Input::PYTHIA8)
   {
+
+
+    PHPy8JetTrigger *theTrigger = new PHPy8JetTrigger();
+//      theTrigger->Verbosity(10);
+    theTrigger->SetEtaHighLow(-.7, .7);
+    theTrigger->SetJetR(.4);
+    theTrigger->SetMinJetPt(20);
+    INPUTGENERATOR::Pythia8->register_trigger(theTrigger);
+
+
     //! apply sPHENIX nominal beam parameter with 2mrad crossing as defined in sPH-TRG-2020-001
     Input::ApplysPHENIXBeamParameter(INPUTGENERATOR::Pythia8);
   }
