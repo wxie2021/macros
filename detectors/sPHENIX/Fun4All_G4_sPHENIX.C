@@ -98,7 +98,7 @@ int Fun4All_G4_sPHENIX(
   // Input::GUN_VERBOSITY = 1;
 
   //D0 generator
-  //Input::DZERO = false;
+  Input::DZERO = false;
   //Input::DZERO_VERBOSITY = 0;
   //Lambda_c generator //Not ready yet
   //Input::LAMBDAC = false;
@@ -360,10 +360,10 @@ int Fun4All_G4_sPHENIX(
   //Enable::KFPARTICLE_TRUTH_MATCH = true;
   //Enable::KFPARTICLE_SAVE_NTUPLE = true;
 
-  Enable::CALOTRIGGER = Enable::CEMC_TOWER && Enable::HCALIN_TOWER && Enable::HCALOUT_TOWER && false;
+  Enable::CALOTRIGGER = Enable::CEMC_TOWER && Enable::HCALIN_TOWER && Enable::HCALOUT_TOWER && true;
 
-  Enable::JETS = false;
-  Enable::JETS_EVAL = Enable::JETS && true;
+  Enable::JETS = true;
+//  Enable::JETS_EVAL = Enable::JETS && true;
   Enable::JETS_QA = Enable::JETS and Enable::QA && true;
 
   // HI Jet Reco for p+Au / Au+Au collisions (default is false for
