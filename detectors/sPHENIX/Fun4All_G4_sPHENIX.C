@@ -28,6 +28,9 @@
 #include <phool/PHRandomSeed.h>
 #include <phool/recoConsts.h>
 
+#include <decayfinder/DecayFinder.h>
+
+R__LOAD_LIBRARY(libkfparticle_sphenix.so)
 R__LOAD_LIBRARY(libfun4all.so)
 
 // For HepMC Hijing
@@ -193,10 +196,8 @@ int Fun4All_G4_sPHENIX(
   // pythia8
   if (Input::PYTHIA8)
   {
-
-
     PHPy8JetTrigger *theTrigger = new PHPy8JetTrigger();
-//      theTrigger->Verbosity(10);
+    //      theTrigger->Verbosity(10);
     theTrigger->SetEtaHighLow(-.7, .7);
     theTrigger->SetJetR(.4);
     theTrigger->SetMinJetPt(20);
@@ -242,6 +243,19 @@ int Fun4All_G4_sPHENIX(
   }
   // register all input generators with Fun4All
   InputRegister();
+  // pythia8
+  if (Input::PYTHIA8)
+  {
+    DecayFinder *D0Finder = new DecayFinder("DecayFinder_" + KFParticle::D0Name);
+    D0Finder->Verbosity(verbosity);
+    D0Finder->setDecayDescriptor(KFParticle::D0DecayDescriptor);
+    D0Finder->triggerOnDecay(KFParticle::D0Trigger);
+    D0Finder->saveDST(true);
+    D0Finder->allowPi0(true);
+    D0Finder->allowPhotons(true);
+    D0Finder->triggerOnDecay(true);
+    se->registerSubsystem(D0Finder);
+  }
 
   // set up production relatedstuff
   //   Enable::PRODUCTION = true;
