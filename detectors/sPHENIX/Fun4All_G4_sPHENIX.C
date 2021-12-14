@@ -29,6 +29,7 @@
 #include <phool/PHRandomSeed.h>
 #include <phool/recoConsts.h>
 
+#include <kfparticle_sphenix/KFParticle_sPHENIX.h>
 #include <decayfinder/DecayFinder.h>
 
 R__LOAD_LIBRARY(libkfparticle_sphenix.so)
@@ -38,7 +39,7 @@ R__LOAD_LIBRARY(libfun4all.so)
 // try inputFile = /sphenix/sim/sim01/sphnxpro/sHijing_HepMC/sHijing_0-12fm.dat
 
 int Fun4All_G4_sPHENIX(
-    const int nEvents = 1,
+    const int nEvents = 5,
     const string &inputFile = "https://www.phenix.bnl.gov/WWW/publish/phnxbld/sPHENIX/files/sPHENIX_G4Hits_sHijing_9-11fm_00000_00010.root",
     const string &outputFile = "G4sPHENIX.root",
     const string &embed_input_file = "https://www.phenix.bnl.gov/WWW/publish/phnxbld/sPHENIX/files/sPHENIX_G4Hits_sHijing_9-11fm_00000_00010.root",
@@ -46,7 +47,7 @@ int Fun4All_G4_sPHENIX(
     const string &outdir = ".")
 {
   Fun4AllServer *se = Fun4AllServer::instance();
-  se->Verbosity(0);
+  se->Verbosity(2);
 
   //Opt to print all random seed used for debugging reproducibility. Comment out to reduce stdout prints.
   PHRandomSeed::Verbosity(1);
@@ -247,10 +248,8 @@ int Fun4All_G4_sPHENIX(
   // pythia8
   if (Input::PYTHIA8)
   {
-    DecayFinder *D0Finder = new DecayFinder("DecayFinder_" + KFParticle::D0Name);
-    D0Finder->Verbosity(verbosity);
-    D0Finder->setDecayDescriptor(KFParticle::D0DecayDescriptor);
-    D0Finder->triggerOnDecay(KFParticle::D0Trigger);
+    DecayFinder *D0Finder = new DecayFinder("DecayFinder_D0");
+    D0Finder->setDecayDescriptor("[D0 -> K^- pi^+]cc");
     D0Finder->saveDST(true);
     D0Finder->allowPi0(true);
     D0Finder->allowPhotons(true);
@@ -637,7 +636,7 @@ int Fun4All_G4_sPHENIX(
   }
 
   se->skip(skip);
-  se->run(nEvents);
+  se->run(100000000, nEvents);
 
   //-----
   // QA output
