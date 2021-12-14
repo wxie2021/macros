@@ -636,7 +636,7 @@ int Fun4All_G4_sPHENIX(
   }
 
   se->skip(skip);
-  se->run(100000000, nEvents);
+  se->run(nEvents, true);
 
   //-----
   // QA output
