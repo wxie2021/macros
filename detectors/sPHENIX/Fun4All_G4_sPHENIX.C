@@ -13,7 +13,7 @@
 #include <G4_HIJetReco.C>
 #include <G4_Input.C>
 #include <G4_Jets.C>
-//#include <G4_KFParticle.C>
+#include <G4_KFParticle.C>
 #include <G4_ParticleFlow.C>
 #include <G4_Production.C>
 #include <G4_TopoClusterReco.C>
@@ -29,10 +29,10 @@
 #include <phool/PHRandomSeed.h>
 #include <phool/recoConsts.h>
 
-#include <kfparticle_sphenix/KFParticle_sPHENIX.h>
-#include <decayfinder/DecayFinder.h>
-
-R__LOAD_LIBRARY(libkfparticle_sphenix.so)
+//#include <kfparticle_sphenix/KFParticle_sPHENIX.h>
+//#include <decayfinder/DecayFinder.h>
+//
+//R__LOAD_LIBRARY(libkfparticle_sphenix.so)
 R__LOAD_LIBRARY(libfun4all.so)
 
 // For HepMC Hijing
@@ -250,7 +250,7 @@ int Fun4All_G4_sPHENIX(
   {
     DecayFinder *D0Finder = new DecayFinder("DecayFinder_D0");
     D0Finder->setDecayDescriptor("[D0 -> K^- pi^+]cc");
-    D0Finder->saveDST(true);
+    D0Finder->saveDST(false);
     D0Finder->allowPi0(true);
     D0Finder->allowPhotons(true);
     D0Finder->triggerOnDecay(true);
@@ -369,9 +369,9 @@ int Fun4All_G4_sPHENIX(
 
   Enable::GLOBAL_RECO = true;
   //Enable::GLOBAL_FASTSIM = true;
-  //Enable::KFPARTICLE = true;
+  Enable::KFPARTICLE = true;
   //Enable::KFPARTICLE_VERBOSITY = 1;
-  //Enable::KFPARTICLE_TRUTH_MATCH = true;
+  Enable::KFPARTICLE_TRUTH_MATCH = true;
   //Enable::KFPARTICLE_SAVE_NTUPLE = true;
 
   Enable::CALOTRIGGER = Enable::CEMC_TOWER && Enable::HCALIN_TOWER && Enable::HCALOUT_TOWER && true;
@@ -560,7 +560,7 @@ int Fun4All_G4_sPHENIX(
   // Run KFParticle on evt
   //======================
   //if (Enable::KFPARTICLE && Input::UPSILON) KFParticle_Upsilon_Reco();
-  //if (Enable::KFPARTICLE && Input::DZERO) KFParticle_D0_Reco();
+  if (Enable::KFPARTICLE) KFParticle_D0_Reco();
   //if (Enable::KFPARTICLE && Input::LAMBDAC) KFParticle_Lambdac_Reco();
 
   //----------------------
@@ -580,7 +580,7 @@ int Fun4All_G4_sPHENIX(
   if (Enable::TRACKING_QA) Tracking_QA();
 
   if (Enable::TRACKING_QA and Enable::CEMC_QA and Enable::HCALIN_QA and Enable::HCALOUT_QA) QA_G4CaloTracking();
-
+  if (Enable::KFPARTICLE)  KFParticle_QA();
   //--------------
   // Set up Input Managers
   //--------------
